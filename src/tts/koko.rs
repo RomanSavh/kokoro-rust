@@ -736,6 +736,17 @@ impl TTSKoko {
         Ok(())
     }
 
+    pub fn tts_pcm(
+        &self,
+        txt: &str,
+        lan: &str,
+        style: &str,
+        speed: f32,
+        silence: Option<usize>,
+    ) -> Result<Vec<f32>, Box<dyn std::error::Error>> {
+        self.tts_raw_audio(txt, lan, style, speed, silence, None, None, None)
+    }
+
     pub fn tts(
         &self,
         TTSOpts {
