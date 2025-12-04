@@ -1,6 +1,6 @@
 use crate::onnx::kokoro_ort::{ModelStrategy, OrtKoko};
 use crate::tts::tokenize::tokenize;
-use crate::utils::format_debug_prefix;
+use crate::utils::{format_debug_prefix, pcm_f32_to_i16};
 use lazy_static::lazy_static;
 use ndarray::Array3;
 use ndarray_npy::NpzReader;
@@ -743,8 +743,9 @@ impl TTSKoko {
         style: &str,
         speed: f32,
         silence: Option<usize>,
-    ) -> Result<Vec<f32>, Box<dyn std::error::Error>> {
-        self.tts_raw_audio(txt, lan, style, speed, silence, None, None, None)
+    ) -> Result<Vec<i16>, Box<dyn std::error::Error>> {
+        let pcm = self.tts_raw_audio(txt, lan, style, speed, silence, None, None, None)?;
+        Ok(pcm_f32_to_i16(&pcm))
     }
 
     pub fn tts(

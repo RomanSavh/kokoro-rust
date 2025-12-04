@@ -42,7 +42,15 @@ pub fn get_colored_request_id_with_relative(request_id: &str, start_time: Instan
         format!("{elapsed_ms:5}") // Right-aligned 5 digits
     };
 
-    format!(
-        "{color}[{request_id}]{RESET} \x1b[90m{relative_time}\x1b[0m"
-    )
+    format!("{color}[{request_id}]{RESET} \x1b[90m{relative_time}\x1b[0m")
+}
+
+pub fn pcm_f32_to_i16(input: &[f32]) -> Vec<i16> {
+    input
+        .iter()
+        .map(|&s| {
+            let s = s.clamp(-1.0, 1.0); // запобігаємо переповненню
+            (s * i16::MAX as f32) as i16
+        })
+        .collect()
 }
