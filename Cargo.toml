@@ -21,9 +21,4 @@ opus = "0.3"
 ogg = "0.9"
 stopwatch = "*"
 # Base ONNX Runtime configuration
-ort = { version = "2.0.0-rc.10", default-features = true }
-
-[features]
-default = ["cpu"]
-cpu = []
-cuda = ["ort/cuda"]
+ort = { version = "2.0.0-rc.10", features = ["cuda"]}

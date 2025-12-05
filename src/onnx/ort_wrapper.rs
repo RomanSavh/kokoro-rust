@@ -1,6 +1,3 @@
-#[cfg(not(feature = "cuda"))]
-use ort::execution_providers::cpu::CPUExecutionProvider;
-#[cfg(feature = "cuda")]
 use ort::execution_providers::cuda::CUDAExecutionProvider;
 use ort::logging::LogLevel;
 use ort::session::Session;
@@ -8,11 +5,7 @@ use ort::session::builder::SessionBuilder;
 
 pub trait OrtWrapper {
     fn load_model(&mut self, model_path: String) -> Result<(), String> {
-        #[cfg(feature = "cuda")]
         let providers = [CUDAExecutionProvider::default().build()];
-
-        #[cfg(not(feature = "cuda"))]
-        let providers = [CPUExecutionProvider::default().build()];
 
         match SessionBuilder::new() {
             Ok(builder) => {
